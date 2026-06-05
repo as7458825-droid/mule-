@@ -24,7 +24,8 @@ from src.features import build_features, label_accounts
 from src.rules import apply_rules
 from src.train import (
     train_xgboost, train_random_forest, train_isolation_forest,
-    evaluate_classifier, save_models, save_metrics, split_features,
+    evaluate_classifier, save_models, save_metrics, save_final_summary,
+    split_features,
 )
 from src.evaluate import run as run_evaluate
 from src.network import build_graph, detect_rings, render_ring_html
@@ -32,8 +33,10 @@ from src.network import build_graph, detect_rings, render_ring_html
 LOG = logging.getLogger("muleshield.baseline")
 
 
-def main(sample_n: int = 200_000) -> None:
+def main(sample_n: int = 50_000) -> None:
+    import time
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+    t_total = time.time()
 
     LOG.info("Step 1: Loading PaySim sample (%d rows) ...", sample_n)
     df = load_paysim("data", sample_n=sample_n)
@@ -79,6 +82,11 @@ def main(sample_n: int = 200_000) -> None:
     save_models({"xgboost": xgb, "random_forest": rf, "isolation_forest": iso},
                 Path("models"))
     save_metrics(metrics, Path("reports/metrics.json"))
+    save_final_summary(
+        metrics, xgb, Path("reports/final_metrics.json"),
+        df=df, feats=feats_full, labels=labels,
+        runtime_sec=round(time.time() - t_total, 1),
+    )
 
     LOG.info("Step 6: Plotting figures ...")
     run_evaluate(models_dir=Path("models"), data_dir=Path("data"),
@@ -89,7 +97,8 @@ def main(sample_n: int = 200_000) -> None:
     rings = detect_rings(G, top_n=10)
     render_ring_html(rings, Path("reports/rings.html"))
 
-    LOG.info("Done. See reports/ for outputs.")
+    LOG.info("Total runtime: %.1f seconds. See reports/ for outputs.",
+             time.time() - t_total)
 
 
 if __name__ == "__main__":

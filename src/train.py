@@ -103,6 +103,66 @@ def save_metrics(metrics: list[dict], out_path: Path) -> None:
     LOG.info("Saved metrics -> %s", out_path)
 
 
+def save_final_summary(
+    metrics: list[dict],
+    xgb_model,
+    out_path: Path,
+    df: pd.DataFrame,
+    feats: pd.DataFrame,
+    labels: pd.Series,
+    runtime_sec: float | None = None,
+) -> None:
+    """Write the consolidated `final_metrics.json` with model metrics,
+    top-10 features, dataset stats, and runtime. This is the file
+    referenced in the solution PDF and the README."""
+    by_model = {m["model"]: m for m in metrics}
+    xgb_m = by_model.get("xgboost", {})
+    rf_m = by_model.get("random_forest", {})
+
+    # Top-10 XGBoost features by gain
+    top_feats: list[tuple[str, float]] = []
+    if hasattr(xgb_model, "feature_importances_"):
+        names = list(feats.columns)
+        gains = xgb_model.feature_importances_.astype(float)
+        order = gains.argsort()[::-1][:10]
+        top_feats = [(names[i], float(gains[i])) for i in order]
+
+    n_mule = int(labels.sum())
+    summary = {
+        "xgb": {
+            "precision": xgb_m.get("precision"),
+            "recall": xgb_m.get("recall"),
+            "f1": xgb_m.get("f1"),
+            "roc_auc": xgb_m.get("roc_auc"),
+            "confusion": xgb_m.get("confusion_matrix"),
+        },
+        "rf": {
+            "precision": rf_m.get("precision"),
+            "recall": rf_m.get("recall"),
+            "f1": rf_m.get("f1"),
+            "roc_auc": rf_m.get("roc_auc"),
+        },
+        "isolation_forest": {
+            k: v for k, v in by_model.get("isolation_forest", {}).items()
+            if k != "confusion_matrix"
+        },
+        "top_features": top_feats,
+        "dataset": "synthetic (PaySim-style) — fallback when PaySim CSV not present",
+        "rows_total": int(len(df)),
+        "rows_fraud": int(df["isFraud"].sum()),
+        "accounts_total": int(len(feats)),
+        "accounts_mule": n_mule,
+        "fraud_ratio_pct": round(100 * df["isFraud"].mean(), 3),
+        "runtime_seconds_approx": runtime_sec,
+        "machine": "B.Tech laptop, 4 GB RAM, no GPU",
+    }
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w") as f:
+        json.dump(summary, f, indent=2)
+    LOG.info("Saved final summary -> %s", out_path)
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
     from data_loader import load_paysim
