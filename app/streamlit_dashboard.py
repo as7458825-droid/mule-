@@ -44,8 +44,8 @@ YELLOW = "#FFC000"
 # ---------------------------------------------------------------------------
 st.sidebar.title("MuleShield-AI")
 st.sidebar.caption("AI-Powered Mule Account & Suspicious Transaction Detection")
-st.sidebar.markdown("**Team:** Ayush Kumar (Lead), Abhinaw, Vinay, Anubhav")
-st.sidebar.markdown("**Institute:** Rajkiye Engineering College, Kannauj")
+st.sidebar.markdown("**Team:** Ayush Kumar (Lead), Abhinav, Vinay, Anubhav")
+st.sidebar.markdown("**Institute:** Rajkiya Engineering College, Kannauj")
 st.sidebar.markdown("**Hackathon:** PSB Cybersecurity, Fraud & AI — 2026")
 
 data_dir = st.sidebar.text_input("Data directory", value="data")
@@ -228,10 +228,10 @@ with tab_about:
     | # | Name | Role |
     |---|---|---|
     | 1 | Ayush Kumar | Team Lead — ML & GenAI |
-    | 2 | Abhinaw Sikharwar | Data Engineer |
+    | 2 | Abhinav Sikharwar | Data Engineer |
     | 3 | Vinay Kushwaha | Dashboard Developer |
     | 4 | Anubhav Upadhyay | ML Support — Graph |
 
-    **Institute:** Rajkiye Engineering College, Kannauj (UP)
+    **Institute:** Rajkiya Engineering College, Kannauj (UP)
     **Program:** B.Tech
     """)
