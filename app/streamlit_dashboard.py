@@ -228,7 +228,7 @@ with tab_about:
     | # | Name | Role |
     |---|---|---|
     | 1 | Ayush Kumar | Team Lead — ML & GenAI |
-    | 2 | Abhinav Sikharwar | Data Engineer |
+    | 2 | Abhinav Sikarwar | Data Engineer |
     | 3 | Vinay Kushwaha | Dashboard Developer |
     | 4 | Anubhav Upadhyay | ML Support — Graph |
 

@@ -1,7 +1,7 @@
 # MuleShield-AI: AI-Powered Mule Account & Suspicious Transaction Detection
 
 > **Proof of Concept for PSB's Cybersecurity, Fraud & AI Hackathon 2026 (BOI + IIT Hyderabad)**
-> Team: Ayush Kumar (Lead), Abhinav Sikharwar, Vinay Kushwaha, Anubhav Upadhyay
+> Team: Ayush Kumar (Lead), Abhinav Sikarwar, Vinay Kushwaha, Anubhav Upadhyay
 > Institute: Rajkiya Engineering College, Kannauj (839)
 
 A hybrid AI/ML system that detects **mule accounts** and suspicious financial transactions using a transparent **Rule Engine**, **XGBoost / Random Forest** classifiers, and **NetworkX** graph intelligence. Includes a **Streamlit dashboard** for bank-officer use with one-click prevention simulator.
@@ -212,7 +212,7 @@ The full solution document is in the team submission. This repo provides:
 | # | Name | Role | Responsibility |
 |---|---|---|---|
 | 1 | Ayush Kumar | Team Lead, ML & GenAI | XGBoost/RF, GenAI layer, integration |
-| 2 | Abhinav Sikharwar | Data Engineer | EDA, feature engineering, dataset prep |
+| 2 | Abhinav Sikarwar | Data Engineer | EDA, feature engineering, dataset prep |
 | 3 | Vinay Kushwaha | Dashboard Developer | Streamlit dashboard, real-time UI |
 | 4 | Anubhav Upadhyay | ML Support + Graph | NetworkX mule graph, evaluation |
 
